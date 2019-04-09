@@ -1,38 +1,40 @@
 import {Router, Request, Response} from "express";
-import request from "request":
+import {AuthApi, tokenclass}  from '../api/auth';
+import { SearchApi } from '../api/search';
+import { listenerCount } from "cluster";
+
 const router = Router();
+const newstoken:tokenclass = new AuthApi();
 
-router.get("/findalbum",(req: Request,res: Response) =>{
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-    var authOptions = {
-        url: 'https://accounts.spotify.com/api/token',
-        headers: {
-          Authorization:
-            'Basic ' +
-            Buffer.from(client_id + ':' + client_secret).toString('base64')
-        },
-        form: {
-          grant_type: 'client_credentials'
-        },
-        json: true
-      };
-      //prueba con request
-      request.post(authOptions, function(error, response, body) {
-        if (!error && response.statusCode === 200) {
-          res.json({ token: body.access_token });
-        }
-      });
+//busqueda
+router.get("/findalbum",(req: Request,res: Response)=>{
+
+    newstoken.getnewToken()
+        .then(response =>{
+            const newsearch = new SearchApi(response);
+            newsearch.findAlbums(encodeURI("In Rainbows"),15).then(
+                function(data){
+                    console.log(data);
+                    res.json({data});
+                },
+                function(err){
+                    console.log(err);
+                }
+            )
+            
+        })
 })
-
+//test de ruta
 router.get("/test",(req: Request,res: Response)=>{
     res.json({
         "prueba" : true,
         "code":200
     });
 })
+// router.get("/test2",newsearch.testtwo)
+//404notfound
 router.get("*",(req: Request,res: Response) =>{
     res.end("404 not found");
 })
 
-export default router; 
+export default router;
