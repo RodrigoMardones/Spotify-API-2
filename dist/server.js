@@ -8,6 +8,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
+const routes_1 = __importDefault(require("./routes/routes"));
 class Server {
     //constructor  de la clase
     constructor(actualport) {
@@ -28,6 +29,7 @@ class Server {
         }));
         this.app.use(cors_1.default());
         this.app.use(cookie_parser_1.default());
+        this.app.use("/apiroutes", routes_1.default);
     }
     //start server
     start(callback) {

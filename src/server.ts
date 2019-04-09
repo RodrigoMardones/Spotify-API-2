@@ -4,6 +4,7 @@ import morgan from "morgan";
 import bodyparser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import routes from './routes/routes';
 
 
 export default class Server{
@@ -29,6 +30,7 @@ export default class Server{
           }));
         this.app.use(cors())
         this.app.use(cookieParser()); 
+        this.app.use("/apiroutes",routes);
     }
     //start server
     public start(callback: Function){
