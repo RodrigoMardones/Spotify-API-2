@@ -23,8 +23,8 @@ class SearchApi {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const listunparsed = yield this.instance.searchAlbums(album, { limit: 20, offset: otheroffset });
-                //const listparsed  = this.listalbumbs(listunparsed.body.albums.items); 
-                return listunparsed;
+                const listparsed = this.listalbumbs(listunparsed.body.albums.items);
+                return listparsed;
             }
             catch (err) {
                 console.log("error retrieving albums from api", err);
@@ -41,6 +41,7 @@ class SearchApi {
                 "releaseDate": e.release_date,
                 "AlbumImage": e.images[0]
             };
+            list.push(newel);
         });
         return list;
     }

@@ -11,15 +11,15 @@ export class SearchApi{
     public async findAlbums(album: string,otheroffset: number){
         try{
             const listunparsed = await this.instance.searchAlbums(album,{ limit : 20, offset : otheroffset });
-            //const listparsed  = this.listalbumbs(listunparsed.body.albums.items); 
-            return listunparsed;
+            const listparsed  = this.listalbumbs(listunparsed.body.albums.items); 
+            return listparsed;
         }catch(err){
             console.log("error retrieving albums from api", err);
         }
     }
 
     private listalbumbs(albums: any[]){
-        let list = [];
+        let list: any = [];
         albums.forEach(e => {
             let newel = {
                 "type":     e.album_type,
@@ -28,7 +28,7 @@ export class SearchApi{
                 "releaseDate":e.release_date,
                 "AlbumImage" :e.images[0]
             }
-            
+            list.push(newel);
         });
         return list;
     }

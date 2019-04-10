@@ -14,20 +14,66 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>consumo de api Spotify</title>
 </head>
-<body>
+<body style="background-color: gray">
     <div id="app">
-        <h3>It works !!!</h3>
-        <h4>{{ message }}</h4>
-        
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Prueba de API Spotify</a>
+            <div class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar Album" aria-label="Search" v-model="word" @keyup.enter="buscar">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"  @click="buscar">buscar</button>          
+            </div>
+        </nav>
+        <div class="container">
+                <div class="row">
+                    <div class="col-md-3" v-for="e of list">   
+                        <div class="card mb-2 mt-2">
+                            <img v-bind:src="e.AlbumImage.url" alt="" class="card-img-top">
+                            <div class="card-body">
+                            <h5 class="card-title">
+                                {{e.artistName}} - {{e.AlbumDisc}} - {{e.releaseDate}}
+                                </div>
+                            </div> 
+                        </div>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
     </div>
 </body>
     <script for>
         var app = new Vue({
             el: '#app',
             data: {
-                message: 'Hello Vue!',
-
+                word: '',
+                list: [],
+            },
+            methods:{
+                buscar(){
+                    let data = {
+                        word: this.word,
+                    }
+                    fetch('/apiroutes/findalbum',{
+                        method:'post',
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
+                        body:JSON.stringify(data)
+                    }).then(response =>{
+                        return response.json();
+                    
+                    }).then(myjson => {
+                        //limpieza de lista
+                        this.list = []
+                        this.list = myjson.list;
+                        console.log(myjson)
+                    })
+                },
+                loadmore(){
+                    console.log("loadmore");
+                }
             }
+
         })
     </script>
 </html>

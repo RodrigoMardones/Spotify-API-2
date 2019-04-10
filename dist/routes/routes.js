@@ -1,23 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const auth_1 = require("../api/auth");
-const search_1 = require("../api/search");
+const controllers_1 = require("../controllers/controllers");
 const router = express_1.Router();
-const newstoken = new auth_1.AuthApi();
+//const newstoken:tokenclass = new AuthApi();
+const sc = new controllers_1.SearchController();
 //busqueda
-router.get("/findalbum", (req, res) => {
-    newstoken.getnewToken()
-        .then(response => {
-        const newsearch = new search_1.SearchApi(response);
-        newsearch.findAlbums(encodeURI("In Rainbows"), 15).then(function (data) {
-            console.log(data);
-            res.json({ data });
-        }, function (err) {
-            console.log(err);
-        });
-    });
-});
+router.post("/findalbum", sc.searchAlbum);
+/* newstoken.getnewToken()
+        .then(response =>{
+            const newsearch = new SearchApi(response);
+            newsearch.findAlbums('In Rainbows',0).then(
+                function(data){
+                    console.log(data);
+                    res.json({data});
+                },
+                function(err){
+                    console.log(err);
+                }
+            )
+            
+        }) */
 //test de ruta
 router.get("/test", (req, res) => {
     res.json({
