@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const auth_1 = require("../api/auth");
 const search_1 = require("../api/search");
+const models_1 = require("../models/models");
 class SearchController {
     searchAlbum(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -21,6 +22,8 @@ class SearchController {
                 //vars taken from index.html
                 let AtoS = req.body.word;
                 const results = yield search.findAlbums(AtoS, 0);
+                const cn = new models_1.modelmongo();
+                cn.addcolection(results);
                 res.json({
                     code: 200,
                     list: results,
