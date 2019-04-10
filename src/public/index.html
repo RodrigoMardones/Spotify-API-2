@@ -17,7 +17,7 @@
 <body style="background-color: gray">
     <div id="app">
         <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Prueba de API Spotify</a>
+            <a class="navbar-brand" href="/">Prueba de API Spotify</a>
             <div class="form-inline">
                     <input class="form-control mr-sm-2" type="search" placeholder="Buscar Album" aria-label="Search" v-model="word" @keyup.enter="buscar">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit"  @click="buscar">buscar</button>          
@@ -25,14 +25,13 @@
         </nav>
         <div class="container">
                 <div class="row">
-                    <h4 v-model=""></h4>
-
+                    <h4 v-if="ops === true && word == '' " class="text-center" style="color:white">Ops No se han encotrado discos relacionados a tu busqueda :(</h4>
                     <div class="col-md-3" v-for="e of list">   
                         <div class="card mb-2 mt-2">
                             <img v-bind:src="e.AlbumImage.url" alt="" class="card-img-top">
                             <div class="card-body">
                             <h5 class="card-title">
-                                {{e.artistName}} - {{e.AlbumDisc}} - {{e.releaseDate}}
+                                {{e.artistName}} - {{e.AlbumDisc}} 
                                 </div>
                             </div> 
                         </div>
@@ -50,12 +49,16 @@
                 word: '',
                 list: [],
                 ops: false,
+                row : 0,
+                countrow : 4,
             },
             methods:{
                 buscar(){
                     let data = {
                         word: this.word,
                     }
+                    this.ops  = false;
+                    this.word = "";
                     fetch('/apiroutes/findalbum',{
                         method:'post',
                         headers:{
@@ -67,10 +70,16 @@
                     
                     }).then(myjson => {
                         //limpieza de lista
-                        this.list = []
-                        this.ops = myjson.list.length === 0;
-                        this.list = myjson.list;
-                        console.log(myjson)
+                        if(myjson.code === 200){
+                            this.list = []
+                            this.ops = myjson.list.length === 0;
+                            this.list = myjson.list;
+                            console.log(myjson)
+                        }
+                        if(myjson.code === 400){
+                            //error en la peticion
+                        }
+
                     })
                 },
                 loadmore(){

@@ -17,8 +17,10 @@ export class SearchController{
             
             const results = await search.findAlbums(AtoS,0);
             const cn = new modelmongo();
-            cn.addcolection(results);
-            res.json({
+            if(results.length != 0){
+                cn.addcolection(results);   
+            }
+            res.status(200).json({
                 code: 200,
                 list: results,
             })  

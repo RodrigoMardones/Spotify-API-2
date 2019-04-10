@@ -23,8 +23,10 @@ class SearchController {
                 let AtoS = req.body.word;
                 const results = yield search.findAlbums(AtoS, 0);
                 const cn = new models_1.modelmongo();
-                cn.addcolection(results);
-                res.json({
+                if (results.length != 0) {
+                    cn.addcolection(results);
+                }
+                res.status(200).json({
                     code: 200,
                     list: results,
                 });
