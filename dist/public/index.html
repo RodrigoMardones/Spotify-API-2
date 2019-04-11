@@ -25,7 +25,10 @@
         </nav>
         <div class="container">
                 <div class="row">
-                    <h4 v-if="ops === true && word == '' " class="text-center" style="color:white">Ops No se han encotrado discos relacionados a tu busqueda :(</h4>
+                    <div class="col-md-4 offset-4" v-if="ops === true && word == '' ">
+                        <h4  class="text-center" style="color:white">Ops No se han encotrado discos relacionados a tu busqueda :(</h4>
+                    </div>
+
                     <div class="col-md-3" v-for="e of list">   
                         <div class="card mb-2 mt-2">
                             <img v-bind:src="e.AlbumImage.url" alt="" class="card-img-top">
@@ -66,25 +69,22 @@
                         },
                         body:JSON.stringify(data)
                     }).then(response =>{
+                        this.list = []
+                        
                         return response.json();
                     
                     }).then(myjson => {
                         //limpieza de lista
                         if(myjson.code === 200){
-                            this.list = []
-                            this.ops = myjson.list.length === 0;
+                            this.ops = myjson.list.length === 0; 
                             this.list = myjson.list;
-                            console.log(myjson)
                         }
                         if(myjson.code === 400){
                             //error en la peticion
+                            this.ops = true;
                         }
-
                     })
                 },
-                loadmore(){
-                    console.log("loadmore");
-                }
             }
 
         })

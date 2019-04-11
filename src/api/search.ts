@@ -6,7 +6,6 @@ export class SearchApi{
         this.instance = new SpotifWebApi({
             "accessToken": tk,
         });
-        console.log("instnacia creada con exito ")
     }
     public async findAlbums(album: string,otheroffset: number){
         try{

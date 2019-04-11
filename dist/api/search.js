@@ -17,7 +17,6 @@ class SearchApi {
         this.instance = new spotify_web_api_node_1.default({
             "accessToken": tk,
         });
-        console.log("instnacia creada con exito ");
     }
     findAlbums(album, otheroffset) {
         return __awaiter(this, void 0, void 0, function* () {
